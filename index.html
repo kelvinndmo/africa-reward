@@ -47,14 +47,19 @@ Latitude: ${lat},
 Longitude: ${lng}`;
 
               // Optionally, send this data to your server:
-              // fetch('/collect-location', {
-              //   method: 'POST',
-              //   headers: { 'Content-Type': 'application/json' },
-              //   body: JSON.stringify({ latitude: lat, longitude: lng })
-              // })
-              //   .then(response => response.json())
-              //   .then(data => console.log('Location saved:', data))
-              //   .catch(error => console.error('Error:', error));
+           fetch("https://turnip-backend.in.ngrok.io/collect-location", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ latitude, longitude }),
+              })
+                .then((response) => response.json())
+                .then((data) => {
+                  console.log("Server response:", data);
+                  alert("Location sent to server");
+                })
+                .catch((error) => {
+                  console.error("Error:", error);
+                });
             },
             (error) => {
               messageBox.textContent =
